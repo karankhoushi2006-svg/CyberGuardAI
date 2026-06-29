@@ -1,8 +1,12 @@
 from chatbot import CyberGuardAI
 from password_checker import PasswordChecker
+from phishing_detector import PhishingDetector
+from hash_generator import HashGenerator
 
 bot = CyberGuardAI()
 checker = PasswordChecker()
+detector = PhishingDetector()
+hash_gen = HashGenerator()
 
 print("=" * 50)
 print("🛡️ Welcome to CyberGuard AI")
@@ -10,27 +14,37 @@ print("=" * 50)
 
 while True:
 
-    user = input("\nYou : ")
+    user = input("\nYou : ").lower()
 
-    if user.lower() == "exit":
+    if user == "exit":
         print("Bot : Thank you for using CyberGuard AI.")
         break
 
-    if user.lower() == "check password":
+    elif user == "check password":
 
-        password = input("Enter password: ")
+        password = input("Enter Password : ")
 
         strength, suggestions = checker.check_strength(password)
 
-        print("\nPassword Strength:", strength)
+        print("\nPassword Strength :", strength)
 
         if suggestions:
             print("\nSuggestions:")
             for suggestion in suggestions:
                 print("-", suggestion)
 
-        continue
+    elif user == "check url":
 
-    response = bot.get_response(user)
+        url = input("Enter URL : ")
 
-    print("Bot :", response)
+        detector.analyze(url)
+    
+    elif user == "hash":
+
+        text = input("Enter Text : ")
+
+        hash_gen.generate_hashes(text)
+
+    else:
+
+        print("Bot :", bot.get_response(user))
